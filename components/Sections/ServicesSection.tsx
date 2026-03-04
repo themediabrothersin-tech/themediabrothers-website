@@ -1,208 +1,229 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { useInView } from "framer-motion";
-import { useRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useRef, useState, useEffect } from "react";
 import { SERVICES } from "@/lib/constants";
+import { fontClasses, cn } from "@/lib/fonts";
 
 export default function ServicesSection() {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, amount: 0.2 });
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [currentStep, setCurrentStep] = useState(0);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end end"],
+  });
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-      },
+  // Services with images
+  const servicesWithImages = [
+    {
+      ...SERVICES[0],
+      image: "https://images.unsplash.com/photo-1590602847861-f357a9332bbc?w=800&q=80",
+      color: "#FF3333"
     },
-  };
+    {
+      ...SERVICES[1],
+      image: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=800&q=80",
+      color: "#FF6B6B"
+    },
+    {
+      ...SERVICES[2],
+      image: "https://images.unsplash.com/photo-1557804506-669a67965ba0?w=800&q=80",
+      color: "#FF3333"
+    },
+    {
+      ...SERVICES[3],
+      image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=800&q=80",
+      color: "#FF6B6B"
+    },
+    {
+      ...SERVICES[5],
+      image: "https://images.unsplash.com/photo-1524758631624-e2822e304c36?w=800&q=80",
+      color: "#FF3333"
+    },
+    {
+      ...SERVICES[6],
+      image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&q=80",
+      color: "#FF6B6B"
+    },
+  ];
 
-  const cardVariants = {
-    hidden: { opacity: 0, y: 30, scale: 0.95 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      scale: 1,
-      transition: {
-        duration: 0.6,
-        ease: "easeOut",
-      },
-    },
-  };
+  useEffect(() => {
+    const unsubscribe = scrollYProgress.on("change", (latest) => {
+      const totalSteps = servicesWithImages.length;
+      const stepSize = 1 / totalSteps;
+      const newStep = Math.min(
+        Math.floor(latest / stepSize),
+        totalSteps - 1
+      );
+      setCurrentStep(newStep);
+    });
+
+    return () => unsubscribe();
+  }, [scrollYProgress, servicesWithImages.length]);
+
+  const currentService = servicesWithImages[currentStep];
 
   return (
-    <section
-      id="services"
-      ref={ref}
-      className="relative py-20 md:py-32 bg-[#0A0A0A] overflow-hidden"
-    >
-      {/* Background Grid */}
-      <div className="absolute inset-0 opacity-5">
-        <div
-          className="absolute inset-0"
-          style={{
-            backgroundImage: `linear-gradient(#FF3333 1px, transparent 1px), linear-gradient(90deg, #FF3333 1px, transparent 1px)`,
-            backgroundSize: "50px 50px",
-          }}
-        />
-      </div>
-
-      <div className="relative z-10 container mx-auto px-4 md:px-6 lg:px-8">
-        {/* Section Header */}
-        <motion.div
-          className="text-center mb-16 md:mb-20"
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8 }}
-        >
-          <motion.span
-            className="inline-block text-[#FF3333] font-medium text-sm md:text-base tracking-widest mb-4"
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={isInView ? { opacity: 1, scale: 1 } : {}}
-            transition={{ delay: 0.2 }}
-          >
-            WHAT WE DO
-          </motion.span>
-          <h2 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-6 text-white">
-            Our <span className="text-[#FF3333]">Services</span>
-          </h2>
-          <p className="text-lg md:text-xl text-gray-400 max-w-3xl mx-auto">
-            From strategy to execution, we provide end-to-end visual storytelling
-            solutions that elevate your brand.
-          </p>
-        </motion.div>
-
-        {/* Services Grid */}
-        <motion.div
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8"
-          variants={containerVariants}
-          initial="hidden"
-          animate={isInView ? "visible" : "hidden"}
-        >
-          {SERVICES.map((service, index) => (
-            <motion.div
-              key={service.id}
-              variants={cardVariants}
-              whileHover={{
-                scale: 1.05,
-                rotateY: 5,
-                rotateX: 5,
+    <section id="services" className="relative">
+      {/* Spacer div to create scroll space */}
+      <div
+        ref={containerRef}
+        style={{ height: `${servicesWithImages.length * 100}vh` }}
+        className="relative"
+      >
+        {/* Fixed content */}
+        <div className="sticky top-0 h-screen w-full bg-[#0A0A0A] overflow-hidden">
+          {/* Background Pattern */}
+          <div className="absolute inset-0 opacity-5">
+            <div
+              className="absolute inset-0"
+              style={{
+                backgroundImage: `linear-gradient(#FF3333 1px, transparent 1px), linear-gradient(90deg, #FF3333 1px, transparent 1px)`,
+                backgroundSize: "50px 50px",
               }}
-              className="relative group"
-            >
-              <div className="relative p-8 bg-gradient-to-br from-[#1A1A1A] to-[#0A0A0A] rounded-2xl border border-gray-800 hover:border-[#FF3333] transition-all duration-300 h-full overflow-hidden">
-                {/* Background Image */}
-                <div className="absolute inset-0 opacity-50">
-                  <img 
-                    src={`https://images.unsplash.com/photo-${[
-                      '1611162616305-c69b3fa7fbe0',
-                      '1590650153855-d9e808231d41',
-                      '1516321318423-f06f85e504b3',
-                      '1557804506-669a67965ba0',
-                      '1492691527719-9d1e07e534b4',
-                      '1505740420928-5e560c06d30e',
-                      '1542744173-8e7e53415bb0',
-                      '1560179707-f14e90ef3623',
-                      '1544367567-0f2fcb009e0b'
-                    ][index % 9]}?w=600&q=80`}
-                    alt={service.title}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                
-                {/* Dark Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-br from-[#1A1A1A]/50 to-[#0A0A0A]/50" />
-                
-                {/* Glow Effect on Hover */}
-                <div className="absolute inset-0 bg-gradient-to-br from-[#FF3333]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            />
+          </div>
 
-                {/* Content */}
-                <div className="relative z-10">
-                  {/* Counter */}
+          <div className="relative z-10 h-full flex items-center">
+            <div className="container mx-auto px-4 md:px-6 lg:px-8">
+              <div className="grid md:grid-cols-2 gap-12 items-center">
+                {/* Left Side - Content */}
+                <motion.div
+                  key={currentStep}
+                  initial={{ opacity: 0, x: -50 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: 50 }}
+                  transition={{ duration: 0.5 }}
+                  className="space-y-6"
+                >
+                  {/* Section Label */}
                   <motion.div
-                    className="text-5xl md:text-6xl font-bold text-[#FF3333]/20 mb-4"
-                    initial={{ opacity: 0, scale: 0 }}
-                    animate={isInView ? { opacity: 1, scale: 1 } : {}}
-                    transition={{ delay: index * 0.1 + 0.3 }}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.1 }}
                   >
-                    {String(service.id).padStart(2, "0")}
+                    <p className={cn(fontClasses.handwrittenMedium, "text-[#FF3333] mb-2")}>
+                      what we do
+                    </p>
+                    <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-4">
+                      Our{" "}
+                      <span className="text-[#FF3333]">Services</span>
+                    </h2>
                   </motion.div>
 
-                  {/* Icon */}
+                  {/* Service Title */}
                   <motion.div
-                    className="text-4xl md:text-5xl mb-4"
-                    animate={{
-                      rotate: [0, 10, -10, 0],
-                    }}
-                    transition={{
-                      duration: 4,
-                      repeat: Infinity,
-                      ease: "easeInOut",
-                      delay: index * 0.2,
-                    }}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.2 }}
                   >
-                    {service.icon}
+                    <div className="flex items-center gap-4 mb-4">
+                      <div
+                        className="w-12 h-1 rounded"
+                        style={{ backgroundColor: currentService.color }}
+                      />
+                      <span className="text-gray-400 text-sm font-semibold tracking-wider">
+                        {String(currentStep + 1).padStart(2, "0")} / {String(servicesWithImages.length).padStart(2, "0")}
+                      </span>
+                    </div>
+                    <h3 className="text-3xl md:text-4xl font-bold text-white mb-4">
+                      {currentService.title}
+                    </h3>
                   </motion.div>
 
-                  {/* Title */}
-                  <h3 className="text-xl md:text-2xl font-bold mb-3 text-white group-hover:text-[#FF3333] transition-colors duration-300">
-                    {service.title}
-                  </h3>
+                  {/* Service Description */}
+                  <motion.p
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.3 }}
+                    className="text-gray-300 text-lg leading-relaxed"
+                  >
+                    {currentService.description}
+                  </motion.p>
 
-                  {/* Description */}
-                  <p className="text-sm md:text-base text-gray-400 leading-relaxed">
-                    {service.description}
-                  </p>
-
-                  {/* Decorative Corner */}
+                  {/* Progress Indicators */}
                   <motion.div
-                    className="absolute top-0 right-0 w-20 h-20 bg-[#FF3333]/10 blur-2xl"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.4 }}
+                    className="flex gap-2 pt-4"
+                  >
+                    {servicesWithImages.map((_, index) => (
+                      <div
+                        key={index}
+                        className={cn(
+                          "h-1 rounded-full transition-all duration-500",
+                          index === currentStep
+                            ? "w-12 bg-[#FF3333]"
+                            : index < currentStep
+                            ? "w-8 bg-[#FF3333]/50"
+                            : "w-8 bg-gray-700"
+                        )}
+                      />
+                    ))}
+                  </motion.div>
+
+                  {/* Scroll Hint */}
+                  <motion.p
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.5 }}
+                    className="text-gray-500 text-sm pt-4"
+                  >
+                    Scroll to explore all services
+                  </motion.p>
+                </motion.div>
+
+                {/* Right Side - Image */}
+                <motion.div
+                  key={`image-${currentStep}`}
+                  initial={{ opacity: 0, scale: 0.9, x: 50 }}
+                  animate={{ opacity: 1, scale: 1, x: 0 }}
+                  transition={{ duration: 0.6, ease: "easeOut" }}
+                  className="relative max-w-sm mx-auto"
+                >
+                  <div className="relative aspect-[5/4] rounded-2xl overflow-hidden">
+                    {/* Glow Effect */}
+                    <div
+                      className="absolute -inset-4 rounded-2xl blur-3xl opacity-30"
+                      style={{ backgroundColor: currentService.color }}
+                    />
+                    
+                    {/* Image */}
+                    <img
+                      src={currentService.image}
+                      alt={currentService.title}
+                      className="relative w-full h-full object-cover rounded-2xl"
+                    />
+                    
+                    {/* Overlay Gradient */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A] via-transparent to-transparent" />
+                    
+                    {/* Number Badge */}
+                    <div className="absolute top-6 right-6 bg-[#FF3333] text-white w-16 h-16 rounded-full flex items-center justify-center font-bold text-2xl">
+                      {String(currentStep + 1).padStart(2, "0")}
+                    </div>
+                  </div>
+
+                  {/* Decorative Elements */}
+                  <motion.div
+                    className="absolute -bottom-4 -left-4 w-32 h-32 rounded-full blur-3xl"
+                    style={{ backgroundColor: currentService.color }}
                     animate={{
-                      scale: [1, 1.5, 1],
-                      opacity: [0.2, 0.4, 0.2],
+                      scale: [1, 1.2, 1],
+                      opacity: [0.2, 0.3, 0.2],
                     }}
                     transition={{
                       duration: 3,
                       repeat: Infinity,
                       ease: "easeInOut",
-                      delay: index * 0.3,
                     }}
                   />
-                </div>
-
-                {/* Bottom Border Animation */}
-                <motion.div
-                  className="absolute bottom-0 left-0 h-1 bg-gradient-to-r from-[#FF3333] to-transparent"
-                  initial={{ width: "0%" }}
-                  whileHover={{ width: "100%" }}
-                  transition={{ duration: 0.3 }}
-                />
+                </motion.div>
               </div>
-            </motion.div>
-          ))}
-        </motion.div>
-
-        {/* Bottom CTA */}
-        <motion.div
-          className="text-center mt-16 md:mt-20"
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ delay: 0.8 }}
-        >
-          <p className="text-lg md:text-xl text-gray-400 mb-6">
-            Ready to elevate your brand with premium storytelling?
-          </p>
-          <motion.a
-            href="#contact"
-            className="inline-block px-8 py-4 bg-[#FF3333] text-white font-bold text-lg rounded-full hover:bg-[#ff4d4d] transition-all duration-300 glow-hover"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            Start Your Story →
-          </motion.a>
-        </motion.div>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   );
