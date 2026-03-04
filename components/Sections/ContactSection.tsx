@@ -5,7 +5,6 @@ import { useInView } from "framer-motion";
 import { useRef, useState } from "react";
 import { Send, Mail, Phone, MapPin, Instagram, Youtube } from "lucide-react";
 import { CONTACT_CONTENT, SITE_CONFIG } from "@/lib/constants";
-import emailjs from "@emailjs/browser";
 
 export default function ContactSection() {
   const ref = useRef(null);
@@ -32,25 +31,18 @@ export default function ContactSection() {
     e.preventDefault();
     setFormStatus("loading");
 
-    // EmailJS configuration - You need to set this up
-    // For now, we'll simulate the email sending
     try {
-      // Uncomment and configure when EmailJS is set up
-      // await emailjs.send(
-      //   'YOUR_SERVICE_ID',
-      //   'YOUR_TEMPLATE_ID',
-      //   {
-      //     from_name: formData.name,
-      //     from_email: formData.email,
-      //     phone: formData.phone,
-      //     message: formData.message,
-      //     to_email: SITE_CONFIG.email,
-      //   },
-      //   'YOUR_PUBLIC_KEY'
-      // );
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
 
-      // Simulate successful submission
-      setTimeout(() => {
+      const data = await response.json();
+
+      if (response.ok) {
         setFormStatus("success");
         setFormData({ name: "", email: "", phone: "", message: "" });
 
@@ -58,7 +50,14 @@ export default function ContactSection() {
         setTimeout(() => {
           setFormStatus("idle");
         }, 5000);
-      }, 1500);
+      } else {
+        setFormStatus("error");
+
+        // Reset error after 5 seconds
+        setTimeout(() => {
+          setFormStatus("idle");
+        }, 5000);
+      }
     } catch (error) {
       console.error("Email send error:", error);
       setFormStatus("error");
