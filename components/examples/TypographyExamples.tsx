@@ -23,7 +23,7 @@ export default function TypographyExamples() {
         
         <p className={cn(fontClasses.heroDescription, 'mt-4 max-w-2xl mx-auto')}>
           We are a storytelling-first media production company built on one belief: 
-          people don't connect with brands — they connect with stories.
+          people don't connect with brands they connect with stories.
         </p>
       </section>
 
@@ -39,7 +39,7 @@ export default function TypographyExamples() {
         </h2>
         
         <p className={cn(fontClasses.sectionDescription, 'mt-6')}>
-          We don't just capture footage—we <span className="font-semibold">freeze moments in time</span> 
+          We don't just capture footage we <span className="font-semibold">freeze moments in time</span> 
           that tell your brand's story.
         </p>
       </section>
@@ -142,7 +142,7 @@ export default function TypographyExamples() {
           </h4>
           <p className={cn(fontClasses.cardDescription, 'mt-4')}>
             From concept to final cut, we create videos that don't just look 
-            good—they tell stories that move people to action.
+            good they tell stories that move people to action.
           </p>
         </div>
       </section>

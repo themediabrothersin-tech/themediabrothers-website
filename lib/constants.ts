@@ -3,9 +3,9 @@
 export const SITE_CONFIG = {
   name: "The Media Brothers",
   tagline: "A Production House",
-  description: "Visual storytelling for brands, founders, and creators who want to be remembered — not scrolled past.",
-  url: "https://themediabrothers.com",
-  email: "chiragnebhani0@gmail.com",
+  description: "Visual storytelling for brands, founders, and creators who want to be remembered not scrolled past.",
+  url: "https://www.themediabrothers.in/",
+  email: "themediabrothers.in@gmail.com",
   phone: "+91-7014959591",
   social: {
     instagram: {
@@ -100,7 +100,7 @@ export const WHY_CHOOSE_US = [
   {
     number: "03",
     title: "Human-Centered Content",
-    description: "We create content that connects emotionally — because people buy from people, not logos."
+    description: "We create content that connects emotionally because people buy from people, not logos."
   },
   {
     number: "04",
@@ -118,7 +118,7 @@ export const PROCESS_STEPS = [
   {
     number: "01",
     title: "Understand the Brand",
-    description: "We start by diving deep into your brand values, target audience, and business goals. This isn't about what you do — it's about why you do it.",
+    description: "We start by diving deep into your brand values, target audience, and business goals. This isn't about what you do it's about why you do it.",
     icon: ""
   },
   {
@@ -130,7 +130,7 @@ export const PROCESS_STEPS = [
   {
     number: "03",
     title: "Create with Purpose",
-    description: "Lights, camera, action — but with intention. We shoot, edit, and produce content that's not just beautiful, but meaningful.",
+    description: "Lights, camera, action but with intention. We shoot, edit, and produce content that's not just beautiful, but meaningful.",
     icon: ""
   },
   {
@@ -149,7 +149,7 @@ export const PROCESS_STEPS = [
 
 export const HERO_CONTENT = {
   mainHeading: "We Don't Just Create Content. We Craft Stories That Build Brands.",
-  subheading: "Visual storytelling for brands, founders, and creators who want to be remembered — not scrolled past.",
+  subheading: "Visual storytelling for brands, founders, and creators who want to be remembered not scrolled past.",
   tagline: "Premium media production • Personal branding • Digital storytelling",
   cta: {
     primary: "Let's Tell Your Story",
@@ -159,14 +159,14 @@ export const HERO_CONTENT = {
 
 export const ABOUT_CONTENT = {
   heading: "Storytelling Is Not a Trend. It's a Language.",
-  paragraph1: "We are a storytelling-first media production company built on one belief: people don't connect with brands — they connect with stories.",
+  paragraph1: "We are a storytelling-first media production company built on one belief: people don't connect with brands they connect with stories.",
   paragraph2: "In a world flooded with content, most brands are shouting. We help you speak. We craft visual narratives that cut through the noise, build trust, and turn viewers into believers.",
   vision: "Our Vision: To help brands and individuals build trust, authority, and identity through authentic visual storytelling."
 };
 
 export const CONTACT_CONTENT = {
   heading: "Your Brand Has a Story. Let's Tell It Right.",
-  subheading: "If you're ready to move beyond random content and build a strong, meaningful brand presence — we're ready to create with you.",
+  subheading: "If you're ready to move beyond random content and build a strong, meaningful brand presence we're ready to create with you.",
   formFields: [
     { name: "name", label: "Your Name", type: "text", required: true },
     { name: "email", label: "Email Address", type: "email", required: true },

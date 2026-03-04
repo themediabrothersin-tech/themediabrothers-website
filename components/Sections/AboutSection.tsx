@@ -85,7 +85,10 @@ export default function AboutSection() {
           {/* Left Column - First Paragraph */}
           <motion.div variants={itemVariants}>
             <p className={cn(fontClasses.bodyLarge, "mb-6")}>
-              {ABOUT_CONTENT.paragraph1}
+              We are a storytelling-first media production company built on one belief:{" "}
+              <span className="font-bold text-[#FF3333] bg-[#FF3333]/10 px-2 py-1 rounded">
+                people don't connect with brands they connect with stories.
+              </span>
             </p>
             <p className={fontClasses.bodyLarge}>
               {ABOUT_CONTENT.paragraph2}
@@ -148,16 +151,6 @@ export default function AboutSection() {
             </motion.div>
           </motion.div>
         </div>
-
-        {/* Quote Section */}
-        <motion.div
-          className="mt-20 text-center"
-          variants={itemVariants}
-        >
-          <p className="font-handwriting text-3xl md:text-4xl lg:text-5xl text-[#FF3333]">
-            "People don't connect with brands —<br />they connect with stories."
-          </p>
-        </motion.div>
       </motion.div>
     </section>
   );

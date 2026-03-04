@@ -4,7 +4,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "The Media Brothers | Visual Storytelling & Media Production",
-  description: "Visual storytelling for brands, founders, and creators who want to be remembered — not scrolled past. Premium media production, personal branding, and digital storytelling.",
+  description: "Visual storytelling for brands, founders, and creators who want to be remembered not scrolled past. Premium media production, personal branding, and digital storytelling.",
   keywords: [
     "media production",
     "visual storytelling",
